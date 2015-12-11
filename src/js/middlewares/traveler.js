@@ -85,25 +85,12 @@ export class Viewer extends Component {
     };
   }
 
-  undo () {
-    undo();
-    this.render();
-  }
-  redo () {
-    redo();
-    this.render();
-  }
-  commit () {
-    commit();
-    this.render();
-  }
-
   renderHeader () {
     return (
       <div>
-        <button onClick={::this.undo}>Undo</button>
-        <button onClick={::this.redo}>Redo</button>
-        <button onClick={::this.commit}>Commit</button>
+        <button onClick={undo}>Undo</button>
+        <button onClick={redo}>Redo</button>
+        <button onClick={commit}>Commit</button>
       </div>
     );
   }
