@@ -21,6 +21,11 @@ export const traveler = (state) => {
     isTraveling = false;
   }
   else {
+    // Remove undoed states
+    if (undoCount !== 0) {
+      states.splice(- undoCount);
+    }
+
     lastState = state;
     undoCount = 0;
 
