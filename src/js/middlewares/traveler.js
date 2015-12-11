@@ -48,8 +48,6 @@ const updatePanels = () => {
     panel.setState({
       states,
       undoCount,
-      current,
-      committed,
     });
   });
   app.update(x => x);
@@ -80,8 +78,6 @@ export class Viewer extends Component {
     this.state = {
       states,
       undoCount,
-      current,
-      committed,
     };
   }
 
@@ -96,7 +92,7 @@ export class Viewer extends Component {
   }
 
   renderStates () {
-    const states = this.state.states;
+    const { states, undoCount } = this.state;
     const renderedStates = states.map((s, i) => {
       const style = {
         color: (i < states.length - undoCount) ? 'white' : 'gray',
