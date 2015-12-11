@@ -1,7 +1,7 @@
 import * as React    from 'react';
 import { Component } from 'flumpt';
 
-import { undo, redo, commit, registerPanel, getState } from './traveler';
+import { emitter, getState } from './traveler';
 
 const panelStyle = {
   position   : 'fixed',
@@ -21,16 +21,19 @@ export class DebugPanel extends Component {
 
   constructor () {
     super();
-    registerPanel(this);
     this.state = getState();
+    emitter.emit('registerPanel', this);
+    emitter.on('update', () => {
+      this.setState(getState());
+    })
   }
 
   renderHeader () {
     return (
       <div>
-        <button onClick={undo}>Undo</button>
-        <button onClick={redo}>Redo</button>
-        <button onClick={commit}>Commit</button>
+        <button onClick={() => emitter.emit('undo')}>Undo</button>
+        <button onClick={() => emitter.emit('redo')}>Redo</button>
+        <button onClick={() => emitter.emit('commit')}>Commit</button>
       </div>
     );
   }

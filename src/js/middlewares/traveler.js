@@ -1,19 +1,37 @@
 import * as React from 'react';
+import { EventEmitter } from 'events';
 
-let committed = null;
-let current   = null;
-let states    = [];
-let undoCount = 0;
-let lastState = null;
-const panels  = [];
+export const emitter = new EventEmitter();
 
-let app = null;
+/**
+ * Traveler internals
+ */
+
+let app    = null;
+let panels = [];
+
+let committed   = null;
+let current     = null;
+let states      = [];
+let undoCount   = 0;
+let lastState   = null;
+let isTraveling = false;
+
+export const getState = () => {
+  return {
+    states,
+    undoCount,
+    committed,
+  };
+};
+
+/**
+ * Middleware
+ */
+
 export const bindApp = (_app) => {
   app = _app;
 };
-
-let isTraveling = false;
-
 
 export const traveler = (state) => {
   if (isTraveling) {
@@ -41,39 +59,33 @@ export const traveler = (state) => {
 
 };
 
+/**
+ * Listeners for DebugPanel
+ */
+
 const updatePanels = () => {
   isTraveling = true;
-  panels.forEach((panel) => {
-    panel.setState(getState());
-  });
+  emitter.emit('update');
   app.update(x => x);
 };
 
-export const undo = () => {
+emitter.on('undo', () => {
   undoCount = Math.min(undoCount + 1, states.length);
   updatePanels();
-};
+});
 
-export const redo = () => {
+emitter.on('redo', () => {
   undoCount = Math.max(undoCount - 1, 0);
   updatePanels();
-};
+});
 
-export const commit = () => {
+emitter.on('commit', () => {
   committed = states[states.length - 1 - undoCount] || committed;
   states    = [];
   undoCount = 0;
   updatePanels();
-};
+});
 
-export const registerPanel = (panel) => {
+emitter.on('registerPanel', (panel) => {
   panels.push(panel);
-};
-
-export const getState = () => {
-  return {
-    states,
-    undoCount,
-    committed,
-  };
-};
+});
