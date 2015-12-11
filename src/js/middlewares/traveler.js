@@ -74,5 +74,6 @@ export const getState = () => {
   return {
     states,
     undoCount,
+    committed,
   };
 };

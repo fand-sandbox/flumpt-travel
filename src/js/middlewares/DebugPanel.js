@@ -3,6 +3,20 @@ import { Component } from 'flumpt';
 
 import { undo, redo, commit, registerPanel, getState } from './traveler';
 
+const panelStyle = {
+  position   : 'fixed',
+  width      : '300px',
+  height     : '100%',
+  top        : 0,
+  right      : 0,
+  background : '#123',
+  color      : 'white',
+};
+
+const committedStateStyle = {
+  color      : '#FFFF99',
+};
+
 export class DebugPanel extends Component {
 
   constructor () {
@@ -21,6 +35,17 @@ export class DebugPanel extends Component {
     );
   }
 
+  renderCommitted () {
+    return (
+      <div style={committedStateStyle}>
+        <h2>commited</h2>
+        <ul>
+          <li>{JSON.stringify(this.state.committed)}</li>
+        </ul>
+      </div>
+    );
+  }
+
   renderStates () {
     const { states, undoCount } = this.state;
     const renderedStates = states.map((s, i) => {
@@ -34,23 +59,21 @@ export class DebugPanel extends Component {
       );
     });
 
-    return <ul>{renderedStates}</ul>;
+    return (
+      <div>
+        <h2>History</h2>
+        <ul>
+          {renderedStates}
+        </ul>
+      </div>
+    );
   }
 
   render () {
-    const style = {
-      position   : 'fixed',
-      width      : '300px',
-      height     : '100%',
-      top        : 0,
-      right      : 0,
-      background : '#123',
-      color      : 'white',
-    };
-
     return  (
-      <div style={style}>
+      <div style={panelStyle}>
         {this.renderHeader()}
+        {this.renderCommitted()}
         {this.renderStates()}
       </div>
     );
