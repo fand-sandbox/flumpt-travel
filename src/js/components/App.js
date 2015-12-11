@@ -7,10 +7,16 @@ class App extends Flux {
 
   subscribe () {
     this.on('increment', () => {
-      this.update(({ count, button }) => ({
-        count : count + 1,
-        button,
-      }));
+      this.update(({ count, button }) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              count : count + 1,
+              button,
+            });
+          }, 600);
+        });
+      });
     });
   }
 

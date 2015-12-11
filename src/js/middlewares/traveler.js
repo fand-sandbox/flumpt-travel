@@ -33,7 +33,16 @@ export const bindApp = (_app) => {
   app = _app;
 };
 
-export const traveler = (state) => {
+export const traveler = (promiseOrState) => {
+  if (promiseOrState instanceof Promise) {
+    return promiseOrState.then(travelReducer);
+  }
+  else {
+    return travelReducer(promiseOrState);
+  }
+};
+
+const travelReducer = (state) => {
   if (isTraveling) {
     isTraveling = false;
   }
@@ -56,7 +65,6 @@ export const traveler = (state) => {
 
   current = states[states.length - 1 - undoCount] || committed;
   return current;
-
 };
 
 /**
