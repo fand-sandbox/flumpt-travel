@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component } from 'flumpt';
 
 let committed = null;
 let current   = null;
@@ -45,85 +44,35 @@ export const traveler = (state) => {
 const updatePanels = () => {
   isTraveling = true;
   panels.forEach((panel) => {
-    panel.setState({
-      states,
-      undoCount,
-    });
+    panel.setState(getState());
   });
   app.update(x => x);
 };
 
-const undo = () => {
+export const undo = () => {
   undoCount = Math.min(undoCount + 1, states.length);
   updatePanels();
 };
 
-const redo = () => {
+export const redo = () => {
   undoCount = Math.max(undoCount - 1, 0);
   updatePanels();
 };
 
-const commit = () => {
+export const commit = () => {
   committed = states[states.length - 1 - undoCount] || committed;
   states    = [];
   undoCount = 0;
   updatePanels();
 };
 
-export class Viewer extends Component {
+export const registerPanel = (panel) => {
+  panels.push(panel);
+};
 
-  constructor () {
-    super();
-    panels.push(this);
-    this.state = {
-      states,
-      undoCount,
-    };
-  }
-
-  renderHeader () {
-    return (
-      <div>
-        <button onClick={undo}>Undo</button>
-        <button onClick={redo}>Redo</button>
-        <button onClick={commit}>Commit</button>
-      </div>
-    );
-  }
-
-  renderStates () {
-    const { states, undoCount } = this.state;
-    const renderedStates = states.map((s, i) => {
-      const style = {
-        color: (i < states.length - undoCount) ? 'white' : 'gray',
-      };
-      return (
-        <li key={i} style={style}>
-          {JSON.stringify(s)}
-        </li>
-      );
-    });
-
-    return <ul>{renderedStates}</ul>;
-  }
-
-  render () {
-    const style = {
-      position   : 'fixed',
-      width      : '300px',
-      height     : '100%',
-      top        : 0,
-      right      : 0,
-      background : '#123',
-      color      : 'white',
-    };
-
-    return  (
-      <div style={style}>
-        {this.renderHeader()}
-        {this.renderStates()}
-      </div>
-    );
-  }
-
-}
+export const getState = () => {
+  return {
+    states,
+    undoCount,
+  };
+};

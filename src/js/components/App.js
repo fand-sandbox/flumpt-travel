@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Flux }   from 'flumpt';
 import Clicker    from './Clicker';
-import { Viewer } from '../middlewares/traveler';
+import DebugPanel from '../middlewares/DebugPanel';
 
 class App extends Flux {
 
@@ -18,7 +18,7 @@ class App extends Flux {
     return (
       <div>
         <Clicker {...state}/>
-        <Viewer />
+        <DebugPanel />
       </div>
     );
 
