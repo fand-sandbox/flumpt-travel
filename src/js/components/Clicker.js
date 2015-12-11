@@ -18,10 +18,16 @@ const ClickButton = React.createClass({
 
   render () {
     return (
-      <button
-        onClick={() => this.dispatch('increment')}>
-        {this.props.button}!
-      </button>
+      <div>
+        <button
+          onClick={() => this.dispatch('incrementSync')}>
+          {this.props.button + 'sync'}!
+        </button>
+        <button
+          onClick={() => this.dispatch('incrementAsync')}>
+          {this.props.button + ' async'}!
+        </button>
+      </div>
     );
   },
 
@@ -30,7 +36,7 @@ const ClickButton = React.createClass({
 class Clicker extends Component {
 
   componentDidMount () {
-    this.dispatch('increment');
+    this.dispatch('incrementSync');
   }
 
   render () {

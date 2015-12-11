@@ -6,7 +6,7 @@ import DebugPanel from '../middlewares/DebugPanel';
 class App extends Flux {
 
   subscribe () {
-    this.on('increment', () => {
+    this.on('incrementAsync', () => {
       this.update(({ count, button }) => {
         return new Promise((resolve) => {
           setTimeout(() => {
@@ -14,9 +14,15 @@ class App extends Flux {
               count : count + 1,
               button,
             });
-          }, 600);
+          }, 1000);
         });
       });
+    });
+    this.on('incrementSync', () => {
+      this.update(({ count, button }) => ({
+        count : count + 1,
+        button,
+      }));
     });
   }
 
