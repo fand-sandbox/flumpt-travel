@@ -5,16 +5,17 @@ import { emitter, getState } from './traveler';
 
 const panelStyle = {
   position   : 'fixed',
-  width      : '300px',
-  height     : '100%',
   top        : 0,
   right      : 0,
-  background : '#123',
+  width      : '300px',
+  height     : '100%',
+  padding    : '10px',
+  background : '#246',
   color      : 'white',
 };
 
 const committedStateStyle = {
-  color      : '#FFFF99',
+  color : '#FFFF99',
 };
 
 export class DebugPanel extends Component {
@@ -40,9 +41,9 @@ export class DebugPanel extends Component {
 
   renderCommitted () {
     return (
-      <div style={committedStateStyle}>
+      <div>
         <h2>commited</h2>
-        <ul>
+        <ul style={committedStateStyle}>
           <li>{JSON.stringify(this.state.committed)}</li>
         </ul>
       </div>

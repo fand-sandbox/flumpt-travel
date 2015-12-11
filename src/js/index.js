@@ -12,7 +12,7 @@ const app = new App({
   },
   initialState: {
     count  : 0,
-    button : 'click me',
+    button : '++',
   },
   middlewares: [
     traveler,
